@@ -22,7 +22,7 @@ contract MediChain is Ownable {
     Roles.Role private doctors;
 
     // datastructure mapping id to patent(like hashmap)
-    mapping(uint256 => Patient) public idToPatient;
+    mapping(uint256 => Patient) private idToPatient;
 
     modifier onlyDoctor(uint256 pid) {
         require(Roles.has(doctors, msg.sender), "You are not a doctor"); // checks if the sender of the transaction is really a doctor

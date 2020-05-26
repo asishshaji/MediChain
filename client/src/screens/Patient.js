@@ -19,7 +19,9 @@ class Patient extends Component {
         selectedAccount: null,
         web3: null,
         name: "",
-        sex: ""
+        sex: "",
+        patientDocs: [],
+        doctorAddress: null
     }
     async componentDidMount() {
         const web3 = await getWeb3();
@@ -37,7 +39,7 @@ class Patient extends Component {
             contract: instance,
             selectedAccount: accounts[0]
         })
-        console.log(this.state.selectedAccount)
+
     }
 
     sendToIpfs = async (event) => {
@@ -70,11 +72,25 @@ class Patient extends Component {
     }
     registerUser = async () => {
 
-        console.log(this.state.selectedAccount)
         const result = await this.state.contract.methods.registerPatient(this.state.name, this.state.sex).send({
             from: this.state.selectedAccount
-        }, (err, hash) => console.log(hash, err))
+        }, (err, hash) => console.log(err))
         alert('Patient ID is ' + result.events.patientRegistered.returnValues[0])
+    }
+
+    getRecords = async () => {
+        const result = await this.state.contract.methods.viewRecords(this.state.patientId).send({
+            from: this.state.selectedAccount
+        }, (err, hash) => console.log(hash, err))
+
+        this.setState({ patientDocs: result.events.sendIpfsHashes.returnValues[0] })
+    }
+
+    addDoctor = async () => {
+        await this.state.contract.methods.addDoctorToPatient(this.state.patientId, this.state.doctorAddress).send({
+            from: this.state.selectedAccount
+        }, (err, hash) => console.log(hash, err))
+
     }
 
     render() {
@@ -121,6 +137,50 @@ class Patient extends Component {
                                 Add</Button>
                         </Card.Body>
                     </Card>
+
+                    <Card style={{ marginTop: '1rem' }}>
+                        <Card.Body>
+                            <Card.Title>Get medical records</Card.Title>
+                            <Form.Label>Patient ID</Form.Label>
+                            <Form.Control type="number" size="sm" placeholder="Enter patient id" onChange={(val) => this.setState({ patientId: val.target.value })} />
+
+                            <Button variant="outline-primary"
+                                style={{ marginTop: '1rem' }}
+                                size="sm" onClick={() => this.getRecords()}>
+
+                                Get Records</Button>
+                            <div style={{ marginTop: '1rem' }}>
+                                {this.state.patientDocs.map((doc, i) => {
+                                    const link = `https://gateway.ipfs.io/ipfs/${doc}`
+                                    return (<a href={link} key={i} target="_blank" style={{ display: 'block' }}>Document {i + 1}</a>)
+                                })}
+                            </div>
+                        </Card.Body>
+                    </Card>
+
+                    <Card style={{ marginTop: '1rem' }}>
+                        <Card.Body>
+                            <Card.Title>Add doctors to access patient data</Card.Title>
+                            <Form.Label>Patient ID</Form.Label>
+                            <Form.Control type="number" size="sm" placeholder="Enter patient id" onChange={(val) => this.setState({ patientId: val.target.value })} />
+
+                            <Form.Label>Doctor address</Form.Label>
+                            <Form.Control type="text" size="sm" placeholder="Enter doctor address" onChange={(val) => this.setState({ doctorAddress: val.target.value })} />
+
+                            <Button variant="outline-primary"
+                                style={{ marginTop: '1rem' }}
+                                size="sm" onClick={() => this.addDoctor()}>
+
+                                add</Button>
+                            <div style={{ marginTop: '1rem' }}>
+                                {this.state.patientDocs.map((doc, i) => {
+                                    const link = `https://gateway.ipfs.io/ipfs/${doc}`
+                                    return (<a href={link} key={i} target="_blank" style={{ display: 'block' }}>Document {i + 1}</a>)
+                                })}
+                            </div>
+                        </Card.Body>
+                    </Card>
+
 
                 </Container>
             </div>

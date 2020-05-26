@@ -102,7 +102,6 @@ contract MediChain is Ownable {
 
     function viewRecords(uint256 pid)
         public
-        view
         onlyPatient(pid)
         returns (string[] memory)
     {
@@ -113,7 +112,6 @@ contract MediChain is Ownable {
 
     function viewRecordsDoc(uint256 pid)
         public
-        view
         onlyDoctor(pid)
         returns (string[] memory)
     {

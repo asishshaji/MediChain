@@ -1,10 +1,9 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import React, { useEffect, useState } from "react";
 
 import Doctor from './screens/Doctor';
 import Hospital from './screens/Hospital'
 import Patient from './screens/Patient'
-import getWeb3 from "./getWeb3";
+import React from "react";
 
 export default function App() {
   return (

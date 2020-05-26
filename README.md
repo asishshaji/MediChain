@@ -11,7 +11,7 @@ npm install
 ```
 Tests are available on *test* directory
 
-In the home directory run
+In the root directory run
 ```bash
 truffle develop
 ```

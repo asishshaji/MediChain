@@ -64,7 +64,7 @@ contract MediChain is Ownable {
     function registerPatient(
         string memory _patientName,
         string memory _patientSex
-    ) public {
+    ) public returns (uint256) {
         Patient memory patient;
         patient.pid = patientCount;
         patient.patientName = _patientName;
@@ -75,7 +75,6 @@ contract MediChain is Ownable {
 
         // emitting event with patient id
         emit patientRegistered(patientCount);
-
         patientCount++;
     }
 
@@ -109,7 +108,7 @@ contract MediChain is Ownable {
     {
         // only doctor added by patient can access this function
         Patient memory patient = idToPatient[pid];
-        return patient.patientRecords;
+        emit sendIpfsHashes(patient.patientRecords);
     }
 
     function viewRecordsDoc(uint256 pid)
@@ -120,6 +119,6 @@ contract MediChain is Ownable {
     {
         // only doctor added by patient can access this function
         Patient memory patient = idToPatient[pid];
-        return patient.patientRecords;
+        emit sendIpfsHashes(patient.patientRecords);
     }
 }

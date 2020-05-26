@@ -36,7 +36,7 @@ class Doctor extends Component {
     }
 
     viewRecordsDoc = async () => {
-        const result = await this.state.contract.viewRecordsDoc(this.state.patientId).send({
+        const result = await this.state.contract.methods.viewRecordsDoc(this.state.patientId).send({
             from: this.state.selectedAccount
         }, (err, hash) => console.log(err))
 
@@ -51,8 +51,8 @@ class Doctor extends Component {
                         <Card.Body>
                             <Card.Title>View docs</Card.Title>
                             <Form.Label>Patient Id</Form.Label>
-                            <Form.Control type="text" size="sm"
-                                placeholder="Enter doctor address" onChange={(val) =>
+                            <Form.Control type="number" size="sm"
+                                placeholder="Enter patient id" onChange={(val) =>
                                     this.setState({ patientId: val.target.value })} />
                             <Button variant="outline-primary" size="sm" onClick={() => this.viewRecordsDoc()} style={{ marginTop: '1rem' }}>
                                 View docs</Button>

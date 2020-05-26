@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+import ContractOwner from './ContractOwner';
 import Doctor from './screens/Doctor';
 import Hospital from './screens/Hospital'
 import Patient from './screens/Patient'
@@ -12,6 +13,8 @@ export default function App() {
         <Route path="/patient" exact component={() => <Patient />} />
         <Route path="/doctor" exact component={Doctor} />
         <Route path="/Hospital" exact component={Hospital} />
+        <Route path="/Owner" exact component={ContractOwner} />
+
       </Switch>
     </BrowserRouter>
   );

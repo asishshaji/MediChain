@@ -72,8 +72,9 @@ class Patient extends Component {
     }
     registerUser = async () => {
 
+        console.log(this.state.name, this.state.sex)
         const result = await this.state.contract.methods.registerPatient(this.state.name, this.state.sex).send({
-            from: this.state.selectedAccount
+            from: this.state.selectedAccount, gasPrice: 2100
         }, (err, hash) => console.log(err))
         alert('Patient ID is ' + result.events.patientRegistered.returnValues[0])
     }
@@ -160,7 +161,7 @@ class Patient extends Component {
 
                     <Card style={{ marginTop: '1rem' }}>
                         <Card.Body>
-                            <Card.Title>Add doctors to access patient data</Card.Title>
+                            <Card.Title>Add medical representatives who can access patient data</Card.Title>
                             <Form.Label>Patient ID</Form.Label>
                             <Form.Control type="number" size="sm" placeholder="Enter patient id" onChange={(val) => this.setState({ patientId: val.target.value })} />
 
@@ -172,12 +173,7 @@ class Patient extends Component {
                                 size="sm" onClick={() => this.addDoctor()}>
 
                                 add</Button>
-                            <div style={{ marginTop: '1rem' }}>
-                                {this.state.patientDocs.map((doc, i) => {
-                                    const link = `https://gateway.ipfs.io/ipfs/${doc}`
-                                    return (<a href={link} key={i} target="_blank" style={{ display: 'block' }}>Document {i + 1}</a>)
-                                })}
-                            </div>
+
                         </Card.Body>
                     </Card>
 

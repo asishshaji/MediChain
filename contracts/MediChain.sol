@@ -16,13 +16,13 @@ contract MediChain is Ownable {
         address[] medicalViewers; // The addresses of all the medical people who can access the patient details
     }
 
-    uint256 private patientCount = 0;
+    uint256 public patientCount = 0;
 
     // Roles involved, later add medical representatives and other medical bodies
     Roles.Role private doctors;
 
     // datastructure mapping id to patent(like hashmap)
-    mapping(uint256 => Patient) idToPatient;
+    mapping(uint256 => Patient) public idToPatient;
 
     modifier onlyDoctor(uint256 pid) {
         require(Roles.has(doctors, msg.sender), "You are not a doctor"); // checks if the sender of the transaction is really a doctor
@@ -102,6 +102,17 @@ contract MediChain is Ownable {
     }
 
     function viewRecords(uint256 pid)
+        public
+        view
+        onlyPatient(pid)
+        returns (string[] memory)
+    {
+        // only doctor added by patient can access this function
+        Patient memory patient = idToPatient[pid];
+        return patient.patientRecords;
+    }
+
+    function viewRecordsDoc(uint256 pid)
         public
         view
         onlyDoctor(pid)

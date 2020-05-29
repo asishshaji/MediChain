@@ -34,7 +34,7 @@ class Hospital extends Component {
     }
 
     addDoctor = async () => {
-        await this.state.contract.addDoctor(this.state.doctorAddress).send({
+        await this.state.contract.methods.addDoctor(this.state.doctorAddress).send({
             from: this.state.selectedAccount
         }, (err, hash) => console.log(err))
     }

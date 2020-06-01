@@ -33,7 +33,7 @@ class Hospital extends Component {
         console.log(await this.state.contract.methods.owner().call())
     }
 
-    addDoctor = async () => {
+    addDoctorFunc = async () => {
         await this.state.contract.methods.addDoctor(this.state.doctorAddress).send({
             from: this.state.selectedAccount
         }, (err, hash) => console.log(err))
@@ -49,7 +49,7 @@ class Hospital extends Component {
                             <Form.Control type="text" size="sm"
                                 placeholder="Enter doctor address" onChange={(val) =>
                                     this.setState({ doctorAddress: val.target.value })} />
-                            <Button variant="outline-primary" size="sm" onClick={() => this.addDoctor()} style={{ marginTop: '1rem' }}>
+                            <Button variant="outline-primary" size="sm" onClick={() => this.addDoctorFunc()} style={{ marginTop: '1rem' }}>
                                 Add doctor</Button>
                         </Card.Body>
                     </Card>
